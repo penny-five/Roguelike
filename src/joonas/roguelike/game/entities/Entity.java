@@ -5,9 +5,14 @@ import joonas.roguelike.game.Appearance;
 
 public abstract class Entity {
 	private HashMap<Property, Object> properties = new HashMap<Property, Object>();
+	private Appearance appearance = Appearance.INVISIBLE;
 	
 	public Appearance getAppearance() {
-		return Appearance.INVISIBLE;
+		return appearance;
+	}
+	
+	protected final void setAppearance(Appearance appearance) {
+		this.appearance = appearance;
 	}
 	
 	public boolean is(Property property) {

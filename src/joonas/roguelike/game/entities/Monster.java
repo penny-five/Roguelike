@@ -5,14 +5,8 @@ import java.awt.Color;
 import joonas.roguelike.game.Appearance;
 
 public class Monster extends PhysicalEntity {
-	private Appearance appearance;
 	public Monster() {
-		appearance = new Appearance('@', Color.WHITE);
-	}
-	
-	@Override
-	public Appearance getAppearance() {
-		return appearance;
+		setAppearance(new Appearance('@', Color.WHITE));
 	}
 
 }
