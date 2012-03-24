@@ -1,6 +1,7 @@
 package joonas.roguelike.game.entities;
 
 public enum Property {
+	UNBREAKABLE("unbreakable", true),
 	VISIBLE("visible", false),
 	BLOCKS_PLAYER_MOVEMENT("blocks_player_movement", false),
 	PHYSICAL("physical", false);

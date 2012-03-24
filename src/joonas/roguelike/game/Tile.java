@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import joonas.roguelike.game.entities.Entity;
-import joonas.roguelike.game.entities.Monster;
 import joonas.roguelike.game.entities.Property;
+import joonas.roguelike.game.entities.Wall;
 
 public class Tile {
 	private Appearance appearance;
 	private List<Entity> entities = new ArrayList<Entity>();
 	
-	public Tile() {
-		appearance = new Appearance('.', Color.WHITE);
-		entities.add(new Monster());
+	private Tile() {
+		appearance = new Appearance(' ', Color.WHITE);
 	}
 	
 	public Appearance getAppearance() {
@@ -37,7 +36,19 @@ public class Tile {
 		return appearance;
 	}
 	
-	public boolean isPassable() {
-		return true;
+	public static Tile walledTile() {
+		Tile tile = new Tile();
+		tile.entities.add(new Wall());
+		return tile;
+	}
+	
+	public static Tile emptyTile() {
+		return new Tile();
+	}
+	
+	public static Tile floorTile() {
+		Tile tile = new Tile();
+		tile.appearance = new Appearance('.', Color.WHITE);
+		return tile;
 	}
 }

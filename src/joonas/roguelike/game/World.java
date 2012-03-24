@@ -22,7 +22,7 @@ public class World {
 	public World() {
 		levels = new ArrayList<Level>();
 		for (int i = 0; i < LEVEL_COUNT; i++) {
-			levels.add(new Level());
+			levels.add(LevelGenerator.generateSimpleLevel());
 		}
 	}
 	
