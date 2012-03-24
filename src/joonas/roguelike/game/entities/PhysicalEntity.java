@@ -5,8 +5,8 @@ import joonas.roguelike.game.Appearance;
 public abstract class PhysicalEntity extends Entity {
 	public abstract Appearance getAppearance();
 	
-	@Override
-	public boolean isVisible() {
-		return true;
-	}
+	public PhysicalEntity() {
+		set(Property.PHYSICAL, true);
+		set(Property.VISIBLE, true);
+	}	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import joonas.roguelike.game.entities.Entity;
 import joonas.roguelike.game.entities.Monster;
+import joonas.roguelike.game.entities.Property;
 
 public class Tile {
 	private Appearance appearance;
@@ -27,7 +28,7 @@ public class Tile {
 	public Appearance getPaintedAppearance() {
 		if (!entities.isEmpty()) {
 			for (Entity entity: entities) {
-				if (entity.isVisible()) {
+				if (entity.is(Property.VISIBLE)) {
 					return entity.getAppearance();
 				}
 			}
