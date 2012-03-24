@@ -11,6 +11,9 @@ import joonas.roguelike.game.entities.Wall;
 public class Tile {
 	private Appearance appearance;
 	private List<Entity> entities = new ArrayList<Entity>();
+	private Level level;
+	private int x = -1;
+	private int y = -1;
 	
 	private Tile() {
 		appearance = new Appearance(' ', Color.WHITE);
@@ -34,6 +37,50 @@ public class Tile {
 		}
 		
 		return appearance;
+	}
+	
+	public List<Entity> getEntities() {
+		return entities;
+	}
+	
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+	
+	public Level getLevel() {
+		return level;
+	}
+	
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public void addEntity(Entity entity) {
+		entities.add(entity);
+		entity.setLocation(this);
+	}
+	
+	public void removeEntity(Entity entity) {
+		entities.remove(entity);
+	}
+	
+	public boolean monstersCanMoveHere() {
+		for (Entity entity : entities) {
+			if (entity.is(Property.UNPASSABLE)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public static Tile walledTile() {

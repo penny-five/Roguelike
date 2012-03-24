@@ -9,10 +9,12 @@ import javax.swing.JPanel;
 
 import joonas.roguelike.game.Appearance;
 import joonas.roguelike.game.Level;
+import joonas.roguelike.game.Log;
 import joonas.roguelike.game.World;
+import joonas.roguelike.game.World.WorldObserver;
 
 
-public class GameView extends JPanel {
+public class GameView extends JPanel implements WorldObserver {
 	private static final int PREFERRED_HEIGHT_IN_TILES = 50;
 	private static final int PREFERRED_WIDTH_IN_TILES = 50;
 	
@@ -21,6 +23,7 @@ public class GameView extends JPanel {
 
 	public GameView() {
 		super();
+		World.getActive().addObserver(this);
 	}
 
 	public GameView(boolean isDoubleBuffered) {
@@ -89,5 +92,11 @@ public class GameView extends JPanel {
 	private int calculateOffset(int totalSize, int tileSize, int numOfTiles) {
 		int tileAreaSize = numOfTiles * tileSize;
 		return (int) ((totalSize - tileAreaSize) * 0.5 + 0.5);
+	}
+
+	@Override
+	public void onWorldUpdated() {
+		Log.debug("world updated");
+		repaint();
 	}
 }

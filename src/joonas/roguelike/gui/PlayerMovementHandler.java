@@ -1,12 +1,15 @@
 package joonas.roguelike.gui;
 
-import joonas.roguelike.game.Log;
+import joonas.roguelike.game.World;
+import joonas.roguelike.game.entities.Player;
 
 public class PlayerMovementHandler {
 	private static final PlayerMovementHandler INSTANCE = new PlayerMovementHandler();
 	
+	private Player player;
+	
 	private PlayerMovementHandler() {
-		
+		player = World.getActive().getPlayer();
 	}
 	
 	public static PlayerMovementHandler getInstance() {
@@ -14,6 +17,6 @@ public class PlayerMovementHandler {
 	}
 	
 	public void handleMovement(MovementDirection direction) {
-		Log.debug("should handle movement to " + direction.name());
+		player.doMovement(direction);
 	}
 }
