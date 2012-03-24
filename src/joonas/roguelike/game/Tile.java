@@ -25,7 +25,6 @@ public class Tile {
 	 * @return {@link Appearance} that should be used when drawing. This can be effected by entities contained by this {@link Tile}
 	 */
 	public Appearance getPaintedAppearance() {
-		Log.debug("entities size " + entities.size());
 		if (!entities.isEmpty()) {
 			for (Entity entity: entities) {
 				if (entity.isVisible()) {
