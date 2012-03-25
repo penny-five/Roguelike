@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
@@ -24,6 +26,8 @@ public class GameView extends JPanel implements WorldObserver {
 	public GameView() {
 		super();
 		World.getActive().addObserver(this);
+		
+		addKeyListener(KeyboardEventProcessor.getInstance());
 	}
 
 	public GameView(boolean isDoubleBuffered) {
