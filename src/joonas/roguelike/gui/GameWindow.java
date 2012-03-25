@@ -13,8 +13,11 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 
 import joonas.roguelike.game.Log;
+import joonas.roguelike.game.World;
 import joonas.roguelike.game.Log.LogEntry;
 import joonas.roguelike.game.Log.LogObserver;
+import joonas.roguelike.game.entities.Player;
+import joonas.roguelike.game.entities.Property;
 import joonas.roguelike.resources.Strings;
 
 public class GameWindow extends JFrame {
@@ -54,7 +57,13 @@ public class GameWindow extends JFrame {
 		leftPanel.setBackground(Color.RED);
 		leftPanel.add(scrollPane);
 		
-		JPanel topPanel = new JPanel();
+		PlayerInformationPane informationPane = new PlayerInformationPane();
+		Player player = World.getActive().getPlayer();
+		informationPane.addPlayerValue("Nimi", player.string(Property.NAME));
+		informationPane.addPlayerValue("Osumapisteet", String.valueOf(player.numberOf(Property.HITPOINTS)));
+		informationPane.addPlayerValue("Maksimiosumapisteet", String.valueOf(player.numberOf(Property.MAX_HITPOINTS)));
+		
+		
 		JPanel middlePanel = new JPanel();
 		JPanel bottomPanel = new JPanel();
 		layout.setVerticalGroup(layout.createParallelGroup()
@@ -62,7 +71,7 @@ public class GameWindow extends JFrame {
 					.addComponent(gameView)
 					.addComponent(leftPanel, 150, GroupLayout.DEFAULT_SIZE, 150))
 				.addGroup(layout.createSequentialGroup()
-					.addComponent(topPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(informationPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(middlePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(bottomPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
@@ -71,7 +80,7 @@ public class GameWindow extends JFrame {
 					.addComponent(gameView)
 					.addComponent(leftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-					.addComponent(topPanel, 300, GroupLayout.DEFAULT_SIZE, 300)
+					.addComponent(informationPane, 300, GroupLayout.DEFAULT_SIZE, 300)
 					.addComponent(middlePanel, 300, GroupLayout.DEFAULT_SIZE, 300)
 					.addComponent(bottomPanel, 300, GroupLayout.DEFAULT_SIZE, 300))
 		);

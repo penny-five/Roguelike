@@ -1,6 +1,12 @@
 package joonas.roguelike.game.entities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Property {
+	HITPOINTS("hitpoints", 1),
+	MAX_HITPOINTS("max_hitpoints", 50),
+	NAME("name", "unknown"),
 	UNBREAKABLE("unbreakable", true),
 	VISIBLE("visible", false),
 	UNPASSABLE("unpassable", false),
@@ -32,6 +38,15 @@ public enum Property {
 
 	public PropertyType getType() {
 		return type;
+	}
+	
+	public static Map<Property, Object> defaultValueMap() {
+		Map<Property, Object> m = new HashMap<Property, Object>();
+		for (Property property : values()) {
+			m.put(property, property.defaultValue);
+		}
+		return m;
+		
 	}
 	
 	

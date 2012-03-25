@@ -1,12 +1,13 @@
 package joonas.roguelike.game.entities;
 
-import java.util.HashMap;
+import java.util.Map;
+
 import joonas.roguelike.game.Appearance;
 import joonas.roguelike.game.Level;
 import joonas.roguelike.game.Tile;
 
 public abstract class Entity {
-	private HashMap<Property, Object> properties = new HashMap<Property, Object>();
+	private Map<Property, Object> properties = Property.defaultValueMap();
 	private Appearance appearance = Appearance.INVISIBLE;
 	private Tile location;
 	
@@ -38,15 +39,23 @@ public abstract class Entity {
 		return (Boolean) properties.get(property);
 	}
 	
-	public void set(Property property, boolean value) {
-		properties.put(property, Boolean.valueOf(value));
-	}
-	
 	public int numberOf(Property property) {
 		return (Integer) properties.get(property);
 	}
 	
+	public String string(Property property) {
+		return (String) properties.get(property);
+	}
+	
+	public void set(Property property, boolean value) {
+		properties.put(property, Boolean.valueOf(value));
+	}
+	
 	public void set(Property property, int value) {
 		properties.put(property, Integer.valueOf(value));
+	}
+	
+	public void set(Property property, String value) {
+		properties.put(property, value);
 	}
 }
