@@ -29,7 +29,7 @@ public class GameWindow extends JFrame {
 		
 		GameView gameView = new GameView();
 		
-		LogPane logPane = new LogPane();
+		LogList logPane = new LogList();
 		new LogController(logPane);
 		
 		JScrollPane scrollPane = new JScrollPane(logPane);

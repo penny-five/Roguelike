@@ -10,7 +10,11 @@ public enum Property {
 	UNBREAKABLE("unbreakable", true),
 	VISIBLE("visible", false),
 	UNPASSABLE("unpassable", false),
-	PHYSICAL("physical", false);
+	PHYSICAL("physical", false),
+	PICKABLE("pickable", false),
+	WEIGHT("weight", 1),
+	PLAYER_CONTROLLED("player_controlled", false),
+	MONSTER("monster", false);
 	
 	public enum PropertyType { INTEGER, BOOLEAN };
 	

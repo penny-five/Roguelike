@@ -1,5 +1,6 @@
 package joonas.roguelike.game;
 
+import joonas.roguelike.game.entities.Armor;
 import joonas.roguelike.game.entities.Player;
 
 public class LevelGenerator {
@@ -14,18 +15,19 @@ public class LevelGenerator {
 			for (int y = 0; y < level.getWidth(); y++) {
 				Tile tile;
 				if (y == 0 || y == level.getHeight() - 1) {
-					tile = Tile.walledTile();
+					tile = Tile.walledTile(x, y);
 				} else if (x == 0 || x == level.getWidth() - 1) {
-					tile = Tile.walledTile();
+					tile = Tile.walledTile(x, y);
 				} else {
-					tile = Tile.floorTile();
+					tile = Tile.floorTile(x, y);
 				}
 				
-				level.setTile(tile, x, y);
+				level.addTile(tile);
 			}
 		}
 		
-		level.addPlayer(new Player(), 1, 1);
+		level.addEntity(new Player(), 1, 1);
+		level.addEntity(new Armor(), 5, 5);
 		
 		return level;
 	}

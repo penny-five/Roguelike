@@ -27,24 +27,28 @@ public abstract class Entity {
 		return location.getLevel();
 	}
 	
-	protected void moveBy(int x, int y) {
-		location.getLevel().moveEntityBy(this, location, x, y);
+	protected boolean moveBy(int x, int y) {
+		return location.getLevel().moveEntityBy(this, location, x, y);
 	}
 	
 	protected final void setAppearance(Appearance appearance) {
 		this.appearance = appearance;
 	}
 	
-	public boolean is(Property property) {
+	public boolean getBoolean(Property property) {
 		return (Boolean) properties.get(property);
 	}
 	
-	public int numberOf(Property property) {
+	public int getInt(Property property) {
 		return (Integer) properties.get(property);
 	}
 	
-	public String string(Property property) {
+	public String getString(Property property) {
 		return (String) properties.get(property);
+	}
+	
+	public Object get(Property property) {
+		return properties.get(property);
 	}
 	
 	public void set(Property property, boolean value) {

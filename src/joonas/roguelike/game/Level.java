@@ -1,7 +1,9 @@
 package joonas.roguelike.game;
 
 import joonas.roguelike.game.entities.Entity;
+import joonas.roguelike.game.entities.Monster;
 import joonas.roguelike.game.entities.Player;
+import joonas.roguelike.game.entities.Property;
 
 public class Level {
 	private final int height;
@@ -9,7 +11,7 @@ public class Level {
 	private final World world;
 	
 	private Tile[][] tiles;
-	private Player player;
+	private Monster player;
 	
 	public Level(World world, int width, int height) {
 		this.world = world;
@@ -31,7 +33,7 @@ public class Level {
 		tiles = new Tile[height][width];
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				tiles[y][x] = Tile.emptyTile();
+				tiles[y][x] = Tile.emptyTile(x, y);
 			}
 		}
 	}
@@ -44,7 +46,7 @@ public class Level {
 		return height;
 	}
 	
-	public Player getPlayer() {
+	public Monster getPlayer() {
 		return player;
 	}
 	
@@ -54,22 +56,29 @@ public class Level {
 		tiles[x][y].addEntity(player);
 	}
 	
-	public void setTile(Tile tile, int x, int y) {
-		tiles[y][x] = tile;
-		tile.setPosition(x, y);
+	public void addEntity(Entity entity, int x, int y) {
+		if (entity.getBoolean(Property.PLAYER_CONTROLLED)) {
+			player = (Monster) entity;
+		}
+		tiles[x][y].addEntity(entity);
+	}
+	
+	public void addTile(Tile tile) {
+		tiles[tile.getY()][tile.getX()] = tile;
 		tile.setLevel(this);
 	}
 	
-	public void moveEntityBy(Entity entity, Tile from, int xMovement, int yMovement) {
+	public boolean moveEntityBy(Entity entity, Tile from, int xMovement, int yMovement) {
 		int targetX = from.getX() + xMovement;
 		int targetY = from.getY() + yMovement;
 		Tile target = tiles[targetY][targetX];
 		if (target.monstersCanMoveHere()) {
 			from.removeEntity(entity);
 			target.addEntity(entity);
-			Log.debug("moved to x " + targetX + " y  " + targetY);
+			return true;
 		}
-		world.requestUpdate();
+
+		return false;
 	}
 	
 	public Tile getTile(int x, int y) {

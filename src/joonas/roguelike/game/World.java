@@ -3,7 +3,7 @@ package joonas.roguelike.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import joonas.roguelike.game.entities.Player;
+import joonas.roguelike.game.entities.Monster;
 
 public class World {
 	public interface WorldObserver {
@@ -50,7 +50,7 @@ public class World {
 		return currentLevelIndex;
 	}
 	
-	public Player getPlayer() {
+	public Monster getPlayer() {
 		return levels.get(currentLevelIndex).getPlayer();
 	}
 	

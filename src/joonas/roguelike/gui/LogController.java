@@ -8,9 +8,9 @@ import joonas.roguelike.game.Log.LogObserver;
 
 public class LogController implements LogObserver {
 	private final DefaultListModel<LogEntry> model = new DefaultListModel<LogEntry>();
-	private final LogPane pane;
+	private final LogList pane;
 	
-	public LogController(LogPane pane) {
+	public LogController(LogList pane) {
 		this.pane = pane;
 		pane.setModel(model);
 		Log.addObserver(this);

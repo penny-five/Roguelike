@@ -2,6 +2,8 @@ package joonas.roguelike.game;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import joonas.roguelike.game.entities.Entity;
@@ -9,13 +11,20 @@ import joonas.roguelike.game.entities.Property;
 import joonas.roguelike.game.entities.Wall;
 
 public class Tile {
+	public interface TileObserver {
+		public void onTileContentsChanged();
+	}
+	
+	private List<TileObserver> observers = new ArrayList<Tile.TileObserver>();
 	private Appearance appearance;
 	private List<Entity> entities = new ArrayList<Entity>();
 	private Level level;
-	private int x = -1;
-	private int y = -1;
+	private final int x;
+	private final int y;
 	
-	private Tile() {
+	private Tile(int x, int y) {
+		this.x = x;
+		this.y = y;
 		appearance = new Appearance(' ', Color.WHITE);
 	}
 	
@@ -29,11 +38,7 @@ public class Tile {
 	 */
 	public Appearance getPaintedAppearance() {
 		if (!entities.isEmpty()) {
-			for (Entity entity: entities) {
-				if (entity.is(Property.VISIBLE)) {
-					return entity.getAppearance();
-				}
-			}
+			return entities.get(0).getAppearance();
 		}
 		
 		return appearance;
@@ -51,11 +56,6 @@ public class Tile {
 		return level;
 	}
 	
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
 	public int getX() {
 		return x;
 	}
@@ -64,9 +64,35 @@ public class Tile {
 		return y;
 	}
 	
+	public void addObserver(TileObserver observer) {
+		observers.add(observer);
+	}
+	
+	public void removeObserver(TileObserver observer) {
+		observers.remove(observer);
+	}
+	
 	public void addEntity(Entity entity) {
 		entities.add(entity);
 		entity.setLocation(this);
+		Collections.sort(entities, new Comparator<Entity>() {
+
+			@Override
+			public int compare(Entity e1, Entity e2) {
+				return e2.getBoolean(Property.MONSTER)? 1 : -1;
+			}
+		});
+	}
+	
+	public List<Entity> getEntitiesWithProperty(Property property, Object value) {
+		List<Entity> e = new ArrayList<Entity>();
+		for (Entity entity : entities) {
+			if (entity.get(property).equals(value)) {
+				e.add(entity);
+			}
+		}
+		
+		return e;
 	}
 	
 	public void removeEntity(Entity entity) {
@@ -75,7 +101,7 @@ public class Tile {
 	
 	public boolean monstersCanMoveHere() {
 		for (Entity entity : entities) {
-			if (entity.is(Property.UNPASSABLE)) {
+			if (entity.getBoolean(Property.UNPASSABLE)) {
 				return false;
 			}
 		}
@@ -83,18 +109,18 @@ public class Tile {
 		return true;
 	}
 	
-	public static Tile walledTile() {
-		Tile tile = new Tile();
+	public static Tile walledTile(int x, int y) {
+		Tile tile = new Tile(x, y);
 		tile.entities.add(new Wall());
 		return tile;
 	}
 	
-	public static Tile emptyTile() {
-		return new Tile();
+	public static Tile emptyTile(int x, int y) {
+		return new Tile(x, y);
 	}
 	
-	public static Tile floorTile() {
-		Tile tile = new Tile();
+	public static Tile floorTile(int x, int y) {
+		Tile tile = new Tile(x, y);
 		tile.appearance = new Appearance('.', Color.WHITE);
 		return tile;
 	}
