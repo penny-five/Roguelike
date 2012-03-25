@@ -1,23 +1,15 @@
 package joonas.roguelike.gui;
 
-import java.awt.Color;
 import java.awt.HeadlessException;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 
-import joonas.roguelike.game.Log;
 import joonas.roguelike.game.World;
-import joonas.roguelike.game.Log.LogEntry;
-import joonas.roguelike.game.Log.LogObserver;
-import joonas.roguelike.game.entities.Player;
-import joonas.roguelike.game.entities.Property;
 import joonas.roguelike.resources.Strings;
 
 public class GameWindow extends JFrame {
@@ -37,32 +29,16 @@ public class GameWindow extends JFrame {
 		
 		GameView gameView = new GameView();
 		
-		final DefaultListModel<LogEntry> model = new DefaultListModel<LogEntry>();
-		final JList<LogEntry> logList = new JList<LogEntry>(model);
-		logList.setCellRenderer(new LogListCell());
-		logList.setAlignmentX(JList.LEFT_ALIGNMENT);
-		Log.addObserver(new LogObserver() {
-			
-			@Override
-			public void onLogEntryAdded(LogEntry entry) {
-				model.addElement(entry);
-				logList.ensureIndexIsVisible(model.getSize() - 1);
-			}
-		});
+		LogPane logPane = new LogPane();
+		new LogController(logPane);
 		
-		JScrollPane scrollPane = new JScrollPane(logList);
-		
+		JScrollPane scrollPane = new JScrollPane(logPane);
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
-		leftPanel.setBackground(Color.RED);
 		leftPanel.add(scrollPane);
 		
 		PlayerInformationPane informationPane = new PlayerInformationPane();
-		Player player = World.getActive().getPlayer();
-		informationPane.addPlayerValue("Nimi", player.string(Property.NAME));
-		informationPane.addPlayerValue("Osumapisteet", String.valueOf(player.numberOf(Property.HITPOINTS)));
-		informationPane.addPlayerValue("Maksimiosumapisteet", String.valueOf(player.numberOf(Property.MAX_HITPOINTS)));
-		
+		new PlayerInformationController(World.getActive().getPlayer(), informationPane);
 		
 		JPanel middlePanel = new JPanel();
 		JPanel bottomPanel = new JPanel();
@@ -85,7 +61,6 @@ public class GameWindow extends JFrame {
 					.addComponent(bottomPanel, 300, GroupLayout.DEFAULT_SIZE, 300))
 		);
 
-		
 		addKeyListener(KeyboardEventProcessor.getInstance());
 		
 		pack();	

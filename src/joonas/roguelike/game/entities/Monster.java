@@ -26,9 +26,13 @@ public class Monster extends PhysicalEntity {
 	}
 	
 	private void notifyObservers(Property property) {
-//		for (MonsterObserver observer : observers) {
-//			observer.onPropertyChanged(property);
-//		}
+		if (observers == null) {
+			return;
+		}
+		
+		for (MonsterObserver observer : observers) {
+			observer.onPropertyChanged(property);
+		}
 	}
 	
 	@Override
