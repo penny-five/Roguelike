@@ -3,15 +3,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
 import joonas.roguelike.game.Appearance;
 import joonas.roguelike.game.Level;
-import joonas.roguelike.game.Log;
 import joonas.roguelike.game.World;
 import joonas.roguelike.game.World.WorldObserver;
 
@@ -100,7 +97,6 @@ public class GameView extends JPanel implements WorldObserver {
 
 	@Override
 	public void onWorldUpdated() {
-		Log.debug("world updated");
 		repaint();
 	}
 }

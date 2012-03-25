@@ -33,13 +33,20 @@ public class TileContentsController implements MonsterObserver, TileObserver {
 	private void updateView() {
 		model.clear();
 		for (Entity entity : location.getEntities()) {
-			model.addElement(entity);
+			if (!entity.equals(player)) {
+				model.addElement(entity);
+			}
 		}
 	}
 
 	@Override
 	public void onLocationChanged(Tile newLocation) {
-		newLocation.addObserver(this);
+		if (location != null) {
+			location.removeObserver(this);
+		}
+		location = newLocation;
+		location.addObserver(this);
+		updateView();
 	}
 
 	@Override

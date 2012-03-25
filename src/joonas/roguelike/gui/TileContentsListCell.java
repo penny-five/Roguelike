@@ -16,7 +16,10 @@ public class TileContentsListCell extends JLabel implements ListCellRenderer<Ent
 	public Component getListCellRendererComponent(
 			JList<? extends Entity> list, Entity value, int index,
 			boolean isSelected, boolean cellHasFocus) {
+		
 		setText(value.getString(Property.NAME));
+		setBackground(isSelected? list.getSelectionBackground() : list.getBackground());
+		setOpaque(true);
 		
 		return this;
 	}

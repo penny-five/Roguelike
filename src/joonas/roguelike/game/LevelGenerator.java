@@ -28,6 +28,23 @@ public class LevelGenerator {
 		
 		level.addEntity(new Player(), 1, 1);
 		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 5);
 		
 		return level;
 	}
