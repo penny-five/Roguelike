@@ -8,7 +8,7 @@ public class Armor extends PhysicalEntity {
 	public Armor() {
 		set(Property.PICKABLE, true);
 		set(Property.WEIGHT, 10);
-		set(Property.NAME, "haarniska");
+		set(Property.NAME, "Sukat");
 		setAppearance(new Appearance('o', Color.RED));
 	}
 }

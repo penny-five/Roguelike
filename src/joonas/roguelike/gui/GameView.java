@@ -3,12 +3,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
 import joonas.roguelike.game.Appearance;
 import joonas.roguelike.game.Level;
+import joonas.roguelike.game.Log;
 import joonas.roguelike.game.World;
 import joonas.roguelike.game.World.WorldObserver;
 
@@ -25,6 +28,27 @@ public class GameView extends JPanel implements WorldObserver {
 		World.getActive().addObserver(this);
 		
 		addKeyListener(KeyboardEventProcessor.getInstance());
+		addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (!isFocusOwner()) {
+					requestFocus();
+				}
+			}
+		});
 	}
 
 	public GameView(boolean isDoubleBuffered) {
@@ -44,7 +68,7 @@ public class GameView extends JPanel implements WorldObserver {
 		Dimension tileSize = calculateTileSizeFrom(getGraphics());
 		return new Dimension(tileSize.width * PREFERRED_WIDTH_IN_TILES, tileSize.height * PREFERRED_HEIGHT_IN_TILES);
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

@@ -1,5 +1,6 @@
 package joonas.roguelike.gui;
 
+import java.awt.Component;
 import java.awt.HeadlessException;
 
 import javax.swing.BoxLayout;
@@ -41,24 +42,22 @@ public class GameWindow extends JFrame {
 		PlayerInformationPane informationPane = new PlayerInformationPane();
 		new PlayerInformationController(World.getActive().getPlayer(), informationPane);
 		
+		InventoryContentsList inventoryContentsList = new InventoryContentsList();
+		new InventoryContentsController(World.getActive().getPlayer().getInventory(), inventoryContentsList);
+		Component wrapperInventoryContents = wrapListToScrollPane(inventoryContentsList, "Taskussa");
+		
 		TileContentsList tileContentsList = new TileContentsList();
 		new TileContentsController(World.getActive().getPlayer(), tileContentsList);
-		JScrollPane tileContentsListScrollPane = new JScrollPane(tileContentsList);
+		Component wrappedTileContents = wrapListToScrollPane(tileContentsList, "Maassa");
 		
-		JPanel tileContentsListWrapper = new JPanel();
-		tileContentsListWrapper.setLayout(new BoxLayout(tileContentsListWrapper, BoxLayout.PAGE_AXIS));
-		tileContentsListWrapper.add(tileContentsListScrollPane);
-		tileContentsListWrapper.setBorder(new TitledBorder("Maassa"));
-		
-		JPanel centerPanel = new JPanel();
 		layout.setVerticalGroup(layout.createParallelGroup()
 				.addGroup(layout.createSequentialGroup()
 					.addComponent(gameView)
 					.addComponent(leftPanel, 150, GroupLayout.DEFAULT_SIZE, 150))
 				.addGroup(layout.createSequentialGroup()
 					.addComponent(informationPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(centerPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(tileContentsListWrapper, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, 150))
+					.addComponent(wrapperInventoryContents, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(wrappedTileContents, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, 150))
 		);
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
@@ -66,8 +65,8 @@ public class GameWindow extends JFrame {
 					.addComponent(leftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
 					.addComponent(informationPane, 300, GroupLayout.DEFAULT_SIZE, 300)
-					.addComponent(centerPanel, 300, GroupLayout.DEFAULT_SIZE, 300)
-					.addComponent(tileContentsListWrapper, 300, GroupLayout.DEFAULT_SIZE, 300))
+					.addComponent(wrapperInventoryContents, 300, GroupLayout.DEFAULT_SIZE, 300)
+					.addComponent(wrappedTileContents, 300, GroupLayout.DEFAULT_SIZE, 300))
 		);
 
 		addKeyListener(KeyboardEventProcessor.getInstance());
@@ -75,5 +74,17 @@ public class GameWindow extends JFrame {
 		pack();	
 		
 		gameView.requestFocus();
+	}
+	
+	private static Component wrapListToScrollPane(Component component, String panelTitle) {
+		JScrollPane scrollPane = new JScrollPane(component);
+		
+		JPanel wrapperPanel = new JPanel();
+		wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.PAGE_AXIS));
+		wrapperPanel.setBorder(new TitledBorder(panelTitle));
+		
+		wrapperPanel.add(scrollPane);
+		
+		return wrapperPanel;
 	}
 }

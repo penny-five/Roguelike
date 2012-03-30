@@ -1,6 +1,7 @@
 package joonas.roguelike.game;
 
 import joonas.roguelike.game.entities.Armor;
+import joonas.roguelike.game.entities.Consumable;
 import joonas.roguelike.game.entities.Player;
 
 public class LevelGenerator {
@@ -26,25 +27,11 @@ public class LevelGenerator {
 			}
 		}
 		
-		level.addEntity(new Player(), 1, 1);
+		Player player = new Player();
+		player.getInventory().addItem(new Consumable());
+		level.addEntity(player, 1, 1);
 		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
-		level.addEntity(new Armor(), 5, 5);
+		level.addEntity(new Armor(), 5, 8);
 		
 		return level;
 	}

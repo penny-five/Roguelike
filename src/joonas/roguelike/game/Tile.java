@@ -48,6 +48,10 @@ public class Tile {
 		return entities;
 	}
 	
+	public Entity getEntityAt(int index) {
+		return entities.get(index);
+	}
+	
 	public void setLevel(Level level) {
 		this.level = level;
 	}
@@ -72,6 +76,12 @@ public class Tile {
 		observers.remove(observer);
 	}
 	
+	private void notifyContentsChanged() {
+		for (TileObserver observer : observers) {
+			observer.onTileContentsChanged();
+		}
+	}
+	
 	public void addEntity(Entity entity) {
 		entities.add(entity);
 		entity.setLocation(this);
@@ -82,6 +92,8 @@ public class Tile {
 				return e2.getBoolean(Property.MONSTER)? 1 : -1;
 			}
 		});
+		
+		notifyContentsChanged();
 	}
 	
 	public List<Entity> getEntitiesWithProperty(Property property, Object value) {
@@ -97,6 +109,7 @@ public class Tile {
 	
 	public void removeEntity(Entity entity) {
 		entities.remove(entity);
+		notifyContentsChanged();
 	}
 	
 	public boolean monstersCanMoveHere() {

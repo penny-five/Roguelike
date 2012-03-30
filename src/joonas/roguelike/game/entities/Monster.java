@@ -63,7 +63,7 @@ public class Monster extends PhysicalEntity {
 		int yDifference = direction.getYMovement();
 		boolean moved = moveBy(xDifference, yDifference);
 		if (moved) {
-			Log.debug(getString(Property.NAME) + " moved to (" + getLocation().getX() + "," + getLocation().getY() + ")");
+			Log.debug(getString(Property.NAME) + " liikkui (" + getLocation().getX() + "," + getLocation().getY() + ")");
 			notifyLocationChanged(getLocation());
 			World.getActive().requestUpdate();
 		}
