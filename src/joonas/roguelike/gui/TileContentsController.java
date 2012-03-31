@@ -10,15 +10,16 @@ import javax.swing.JPopupMenu;
 
 import joonas.roguelike.game.Log;
 import joonas.roguelike.game.Tile;
-import joonas.roguelike.game.Tile.TileObserver;
 import joonas.roguelike.game.entities.Entity;
 import joonas.roguelike.game.entities.Monster;
-import joonas.roguelike.game.entities.Monster.MonsterObserver;
 import joonas.roguelike.game.entities.Property;
+import joonas.roguelike.game.event.MonsterLocationChangedEvent;
+import joonas.roguelike.game.event.TileContentChangedEvent;
 import joonas.roguelike.gui.ContentsList.OnPopUpMenuRequestedListener;
 
-public class TileContentsController implements MonsterObserver, TileObserver,
-OnPopUpMenuRequestedListener {
+import com.google.common.eventbus.Subscribe;
+
+public class TileContentsController extends Controller implements OnPopUpMenuRequestedListener {
 	private final TileContentsList list;
 	private final DefaultListModel<Entity> model = new DefaultListModel<>();
 	private final Monster player;
@@ -31,15 +32,23 @@ OnPopUpMenuRequestedListener {
 		list.setModel(model);
 		list.setOnPopUpMenuRequestedListener(this);
 
-		player.addObserver(this);
 		location = player.getLocation();
-		location.addObserver(this);
 		updateView();
 	}
 
-	@Override
-	public void onPropertyChanged(Property property) {
-		updateView();
+	@Subscribe
+	public void onLocationChanged(MonsterLocationChangedEvent event) {
+		if (event.getMonster().equals(player)) {
+			location = player.getLocation();
+			updateView();
+		}
+	}
+
+	@Subscribe
+	public void onTileContentsChanged(TileContentChangedEvent event) {
+		if (event.getTile().equals(player.getLocation())) {
+			updateView();
+		}
 	}
 
 	private void updateView() {
@@ -49,21 +58,6 @@ OnPopUpMenuRequestedListener {
 				model.addElement(entity);
 			}
 		}
-	}
-
-	@Override
-	public void onLocationChanged(Tile newLocation) {
-		if (location != null) {
-			location.removeObserver(this);
-		}
-		location = newLocation;
-		location.addObserver(this);
-		updateView();
-	}
-
-	@Override
-	public void onTileContentsChanged() {
-		updateView();
 	}
 
 	@Override

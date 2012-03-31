@@ -1,24 +1,16 @@
 package joonas.roguelike.game.entities;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 
 import joonas.roguelike.game.Appearance;
-import joonas.roguelike.game.Log;
-import joonas.roguelike.game.Tile;
 import joonas.roguelike.game.World;
+import joonas.roguelike.game.event.Event;
+import joonas.roguelike.game.event.MonsterLocationChangedEvent;
+import joonas.roguelike.game.event.MonsterPropertyChangedEvent;
 import joonas.roguelike.gui.MovementDirection;
 
 public class Monster extends PhysicalEntity {
-	public interface MonsterObserver {
-		public void onPropertyChanged(Property property);
-
-		public void onLocationChanged(Tile newLocation);
-	}
-
 	private final Inventory inventory;
-	private final List<MonsterObserver> observers = new ArrayList<>();
 
 	public Monster() {
 		inventory = new Inventory(this);
@@ -28,32 +20,12 @@ public class Monster extends PhysicalEntity {
 		set(Property.MONSTER, true);
 	}
 
-	public void addObserver(MonsterObserver observer) {
-		observers.add(observer);
-	}
-
-	public void removeObserver(MonsterObserver observer) {
-		observers.remove(observer);
+	private void notifyLocationChanged() {
+		Event.post(new MonsterLocationChangedEvent(this));
 	}
 
 	private void notifyPropertyChanged(Property property) {
-		if (observers == null) {
-			return;
-		}
-
-		for (MonsterObserver observer : observers) {
-			observer.onPropertyChanged(property);
-		}
-	}
-
-	private void notifyLocationChanged(Tile location) {
-		if (observers == null) {
-			return;
-		}
-
-		for (MonsterObserver observer : observers) {
-			observer.onLocationChanged(location);
-		}
+		Event.post(new MonsterPropertyChangedEvent(this, property));
 	}
 
 	public Inventory getInventory() {
@@ -65,8 +37,7 @@ public class Monster extends PhysicalEntity {
 		int yDifference = direction.getYMovement();
 		boolean moved = moveBy(xDifference, yDifference);
 		if (moved) {
-			Log.debug(getString(Property.NAME) + " liikkui (" + getLocation().getX() + "," + getLocation().getY() + ")");
-			notifyLocationChanged(getLocation());
+			notifyLocationChanged();
 			World.getActive().requestUpdate();
 		}
 	}

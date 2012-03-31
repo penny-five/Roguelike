@@ -3,13 +3,10 @@ package joonas.roguelike.game.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import joonas.roguelike.game.event.Event;
+import joonas.roguelike.game.event.InventoryChangedEvent;
+
 public class Inventory {
-	public interface InventoryObserver {
-		public void onInventoryChanged(Inventory inventory);
-	}
-
-	private final List<InventoryObserver> observers = new ArrayList<>();
-
 	private final List<Entity> contents = new ArrayList<>();
 	private final Monster owner;
 
@@ -31,17 +28,7 @@ public class Inventory {
 		return contents;
 	}
 
-	public void addObserver(InventoryObserver observer) {
-		observers.add(observer);
-	}
-
-	public void removeObserver(InventoryObserver observer) {
-		observers.remove(observer);
-	}
-
 	private void notifyInventoryChanged() {
-		for (InventoryObserver observer : observers) {
-			observer.onInventoryChanged(this);
-		}
+		Event.post(new InventoryChangedEvent(this));
 	}
 }

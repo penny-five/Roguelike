@@ -83,16 +83,13 @@ public class GameView extends JPanel implements WorldObserver {
 
 		Level level = World.getActive().getCurrentLevel();
 
-		int horizontalOffset = calculateOffset(getWidth(), tileSize.width,
-				level.getWidth());
-		int verticalOffset = calculateOffset(getHeight(), tileSize.height,
-				level.getHeight());
+		int horizontalOffset = calculateOffset(getWidth(), tileSize.width, level.getWidth());
+		int verticalOffset = calculateOffset(getHeight(), tileSize.height, level.getHeight());
 		g.translate(horizontalOffset, verticalOffset);
 
 		for (int y = 0; y < level.getHeight(); y++) {
 			for (int x = 0; x < level.getWidth(); x++) {
-				Appearance appearance = level.getTile(x, y)
-						.getPaintedAppearance();
+				Appearance appearance = level.getTile(x, y).getPaintedAppearance();
 				drawTile(x, y, appearance, tileSize, g);
 			}
 		}
@@ -103,8 +100,7 @@ public class GameView extends JPanel implements WorldObserver {
 		g.fillRect(0, 0, getWidth(), getHeight());
 	}
 
-	private void drawTile(int x, int y, Appearance appearance,
-			Dimension tileSize, Graphics g) {
+	private void drawTile(int x, int y, Appearance appearance, Dimension tileSize, Graphics g) {
 		g.setColor(appearance.getBackgroundColor());
 		int topLeftX = x * tileSize.width;
 		int topLeftY = y * tileSize.height;
@@ -112,13 +108,11 @@ public class GameView extends JPanel implements WorldObserver {
 		int bottomRightY = topLeftY + tileSize.height;
 		g.drawRect(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		g.setColor(appearance.getGraphicColor());
-		g.drawString(String.valueOf(appearance.getGraphic()), topLeftX,
-				bottomRightY);
+		g.drawString(String.valueOf(appearance.getGraphic()), topLeftX, bottomRightY);
 	}
 
 	private Dimension calculateTileSizeFrom(Graphics g) {
-		Rectangle2D charBounds = g.getFontMetrics().getStringBounds(
-				UNICODE_FULL_BLOCK, g);
+		Rectangle2D charBounds = g.getFontMetrics().getStringBounds(UNICODE_FULL_BLOCK, g);
 		int tileHeight = (int) (charBounds.getHeight() + 0.5);
 		int tileWidth = (int) (charBounds.getWidth() + 0.5);
 		return new Dimension(tileWidth, tileHeight);

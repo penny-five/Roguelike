@@ -1,31 +1,36 @@
 package joonas.roguelike.gui;
 
-import joonas.roguelike.game.Tile;
 import joonas.roguelike.game.entities.Entity;
 import joonas.roguelike.game.entities.Monster;
-import joonas.roguelike.game.entities.Monster.MonsterObserver;
 import joonas.roguelike.game.entities.Property;
+import joonas.roguelike.game.event.MonsterLocationChangedEvent;
+import joonas.roguelike.game.event.MonsterPropertyChangedEvent;
 
-public class PlayerInformationController implements MonsterObserver {
+import com.google.common.eventbus.Subscribe;
+
+public class PlayerInformationController extends Controller {
 	private final PlayerInformationPane pane;
 	private final Entity player;
 
-	public PlayerInformationController(Monster player,
-			PlayerInformationPane pane) {
+	public PlayerInformationController(Monster player, PlayerInformationPane pane) {
 		this.player = player;
 		this.pane = pane;
 
-		player.addObserver(this);
 		updateView();
 	}
 
-	@Override
-	public void onPropertyChanged(Property property) {
-		updateView();
+	@Subscribe
+	public void onPropertyChanged(MonsterPropertyChangedEvent event) {
+		if (event.getMonster().equals(player)) {
+			updateView();
+		}
 	}
 
-	@Override
-	public void onLocationChanged(Tile newLocation) {
+	@Subscribe
+	public void onLocationChanged(MonsterLocationChangedEvent event) {
+		if (event.getMonster().equals(player)) {
+			updateView();
+		}
 	}
 
 	private void updateView() {

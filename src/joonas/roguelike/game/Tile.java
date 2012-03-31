@@ -9,13 +9,10 @@ import java.util.List;
 import joonas.roguelike.game.entities.Entity;
 import joonas.roguelike.game.entities.Property;
 import joonas.roguelike.game.entities.Wall;
+import joonas.roguelike.game.event.Event;
+import joonas.roguelike.game.event.TileContentChangedEvent;
 
 public class Tile {
-	public interface TileObserver {
-		public void onTileContentsChanged();
-	}
-
-	private final List<TileObserver> observers = new ArrayList<>();
 	private Appearance appearance;
 	private final List<Entity> entities = new ArrayList<>();
 	private Level level;
@@ -69,20 +66,6 @@ public class Tile {
 		return y;
 	}
 
-	public void addObserver(TileObserver observer) {
-		observers.add(observer);
-	}
-
-	public void removeObserver(TileObserver observer) {
-		observers.remove(observer);
-	}
-
-	private void notifyContentsChanged() {
-		for (TileObserver observer : observers) {
-			observer.onTileContentsChanged();
-		}
-	}
-
 	public void addEntity(Entity entity) {
 		entities.add(entity);
 		entity.setLocation(this);
@@ -111,6 +94,10 @@ public class Tile {
 	public void removeEntity(Entity entity) {
 		entities.remove(entity);
 		notifyContentsChanged();
+	}
+
+	private void notifyContentsChanged() {
+		Event.post(new TileContentChangedEvent(this));
 	}
 
 	public boolean monstersCanMoveHere() {
