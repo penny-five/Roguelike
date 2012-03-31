@@ -15,13 +15,15 @@ public enum Property {
 	WEIGHT("weight", 1),
 	PLAYER_CONTROLLED("player_controlled", false),
 	MONSTER("monster", false);
-	
-	public enum PropertyType { INTEGER, BOOLEAN };
-	
+
+	public enum PropertyType {
+		INTEGER, BOOLEAN
+	};
+
 	private final String identifier;
 	private final Object defaultValue;
 	private final PropertyType type;
-	
+
 	private Property(String identifier, Object defaultValue) {
 		this.identifier = identifier;
 		this.defaultValue = defaultValue;
@@ -31,7 +33,7 @@ public enum Property {
 			type = PropertyType.INTEGER;
 		}
 	}
-	
+
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -43,15 +45,14 @@ public enum Property {
 	public PropertyType getType() {
 		return type;
 	}
-	
+
 	public static Map<Property, Object> defaultValueMap() {
-		Map<Property, Object> m = new HashMap<Property, Object>();
+		Map<Property, Object> m = new HashMap<>();
 		for (Property property : values()) {
 			m.put(property, property.defaultValue);
 		}
 		return m;
-		
+
 	}
-	
-	
+
 }

@@ -1,5 +1,7 @@
 package joonas.roguelike.gui;
 
+import java.awt.Component;
+
 import javax.swing.JList;
 
 import joonas.roguelike.game.Log.LogEntry;
@@ -9,6 +11,6 @@ public class LogList extends JList<LogEntry> {
 
 	public LogList() {
 		setCellRenderer(new LogListCell());
-		setAlignmentX(JList.LEFT_ALIGNMENT);
+		setAlignmentX(Component.LEFT_ALIGNMENT);
 	}
 }

@@ -21,12 +21,12 @@ public class LogListCell extends JLabel implements ListCellRenderer<LogEntry> {
 		case DEBUG:
 			setForeground(Color.GREEN);
 			break;
-		case EVENT: 
+		case EVENT:
 			setForeground(Color.BLACK);
 		default:
 			setForeground(Color.GRAY);
 		}
-		
+
 		return this;
 	}
 
